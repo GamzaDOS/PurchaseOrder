@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+	PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+    
+<mapper namespace="com.overc1ock.mapper.PurchaseOrderMapper">
+
+<select id="completelist" resultType="com.overc1ock.domain.PpDTO">
+  SELECT
+    item.item_code,
+    item.item_name,
+    item_use_plan.consumption,
+    procurement_plan.procurement_date,
+    procurement_plan.pp_date,
+    products_production_plan.production_date,
+    products_production_plan.process
+  FROM item
+  INNER JOIN item_use_plan ON item.item_code = item_use_plan.item_code
+  INNER JOIN procurement_plan ON item_use_plan.iup_code = procurement_plan.iup_code
+  INNER JOIN products_production_plan ON item_use_plan.ppp_code = products_production_plan.ppp_code
+  <where>
+    <if test="startDate != null and startDate != '' and endDate != null and endDate != ''">
+      AND pp_date BETWEEN DATE(#{startDate}) AND DATE(#{endDate}) + 1
+    </if>
+    <if test="item_name != null and item_name != ''">
+      AND item_name LIKE CONCAT('%', #{item_name}, '%')
+    </if>
+  </where>
+</select>
+
+	<select id="contractlist" resultType="com.overc1ock.domain.ContractDTO"> 
+	SELECT distinct  subcontractor.subcontractor_name, item.item_code, item.item_name, contract.supply_price
+	FROM item
+	left JOIN contract ON item.item_code = contract.item_code
+	left JOIN subcontractor ON contract.subcontractor_name = subcontractor.subcontractor_name
+	WHERE subcontractor.subcontractor_name IS NOT NULL
+	  AND item.item_code IS NOT NULL
+	  AND item.item_name IS NOT NULL
+	  AND contract.supply_price IS NOT NULL
+	  
+	</select>
+	
+	<select id="pilist" resultType="com.overc1ock.domain.PiDTO">
+	SELECT distinct item.item_code, item.item_name, subcontractor.subcontractor_name, contract.contract_name, contract.contract_file, procurement_plan.procurement_date, purchase_order.po_date, progress_inspection.pi_status, employee.employee_name
+	FROM item
+	INNER JOIN contract ON item.item_code = contract.item_code
+	INNER JOIN subcontractor ON contract.subcontractor_name = subcontractor.subcontractor_name
+	INNER JOIN procurement_plan ON item.item_code = procurement_plan.po_code
+	INNER JOIN progress_inspection ON item.item_code = progress_inspection.pi_code
+	INNER JOIN purchase_order ON item.item_code = purchase_order.po_code
+	INNER JOIN employee ON item.item_code = employee.employee_code
+	  <where>
+    <if test="startDate != null and startDate != '' and endDate != null and endDate != ''">
+      AND po_date BETWEEN DATE(#{startDate}) AND DATE(#{endDate}) + 1
+    </if>
+    <if test="item_name != null and item_name != ''">
+      AND item_name LIKE CONCAT('%', #{item_name}, '%')
+    </if>
+  </where>
+	</select>
+	
+	<select id="pislist" resultType="com.overc1ock.domain.PisDTO">
+	SELECT progress_inspection_schedule.pis_name, progress_inspection_schedule.pis_date, employee.employee_name, progress_inspection_schedule.completion_rate
+	FROM employee
+	LEFT JOIN progress_inspection_schedule ON employee.employee_code = progress_inspection_schedule.employee_code;
+	</select>
+	
+	
+	<select id="closelist" resultType="com.overc1ock.domain.CloseDTO">
+	select purchase_order.po_code, purchase_order.payment, purchase_order.delivery_place, purchase_order.delivery_person, purchase_order.po_date, purchase_order.close_status, item.item_name
+	from purchase_order
+	INNER JOIN procurement_plan on purchase_order.po_code = procurement_plan.po_code
+	INNER JOIN item_use_plan on procurement_plan.iup_code = item_use_plan.iup_code
+	INNER JOIN item on  item_use_plan.item_code = item.item_code
+	  <where>
+    <if test="startDate != null and startDate != '' and endDate != null and endDate != ''">
+      AND po_date BETWEEN DATE(#{startDate}) AND DATE(#{endDate}) + 1
+    </if>
+    <if test="item_name != null and item_name != ''">
+      AND item_name LIKE CONCAT('%', #{item_name}, '%')
+    </if>
+  </where>
+	</select>
+	
+	
+	
+	<select id="contractlistCount"  resultType="int">
+	SELECT COUNT(*) AS row_count
+FROM item
+INNER JOIN item_use_plan ON item.item_code = item_use_plan.item_code
+INNER JOIN procurement_plan ON item_use_plan.iup_code = procurement_plan.iup_code
+INNER JOIN products_production_plan ON item_use_plan.ppp_code = products_production_plan.ppp_code
+  <where>
+    <if test="startDate != null and startDate != '' and endDate != null and endDate != ''">
+      AND pp_date BETWEEN DATE(#{startDate}) AND DATE(#{endDate}) + 1
+    </if>
+    </where>
+	</select>
+	
+	<select id="pocount"  resultType="int">
+    SELECT COUNT(*) 
+    FROM (
+        SELECT DISTINCT item.item_code, item.item_name, subcontractor.subcontractor_name, contract.contract_name, contract.contract_file, procurement_plan.procurement_date, purchase_order.po_date, progress_inspection.pi_status, employee.employee_name
+        FROM item
+        INNER JOIN contract ON item.item_code = contract.item_code
+        INNER JOIN subcontractor ON contract.subcontractor_name = subcontractor.subcontractor_name
+        INNER JOIN procurement_plan ON item.item_code = procurement_plan.po_code
+        INNER JOIN progress_inspection ON item.item_code = progress_inspection.pi_code
+        INNER JOIN purchase_order ON item.item_code = purchase_order.po_code
+        INNER JOIN employee ON item.item_code = employee.employee_code
+        <where>
+            <if test="startDate != null and startDate != '' and endDate != null and endDate != ''">
+                AND purchase_order.po_date BETWEEN DATE(#{startDate}) AND DATE(#{endDate}) + 1
+            </if>
+            <if test="item_name != null and item_name != ''">
+                AND item.item_name LIKE CONCAT('%', #{item_name}, '%')
+            </if>
+        </where>
+    ) AS subquery
+	</select>
+	
+	<select id="closecount"  resultType="int">
+	SELECT COUNT(*) AS data_count
+	FROM purchase_order
+	INNER JOIN procurement_plan ON purchase_order.po_code = procurement_plan.po_code
+	INNER JOIN item_use_plan ON procurement_plan.iup_code = item_use_plan.iup_code
+	INNER JOIN item ON item_use_plan.item_code = item.item_code
+	<where>
+	  <if test="startDate != null and startDate != '' and endDate != null and endDate != ''">
+	    AND po_date BETWEEN DATE(#{startDate}) AND DATE(#{endDate}) + 1
+	  </if>
+	  <if test="item_name != null and item_name != ''">
+	    AND item_name LIKE CONCAT('%', #{item_name}, '%')
+	  </if>
+	</where>
+	
+	</select>
+	
+	
+
+    
+</mapper>
