@@ -184,12 +184,11 @@
     <script>
       // 테이블 데이터 개수 가져오기 (가상의 데이터로 예시 작성)
       const data = [
-        { table: "조달계획", count: ${count1} },
-        { table: "발주서발행중", count: ${count2} },
-        { table: "발주서마감중", count: ${count3} },
-        { table: "발주서마감완료", count:4 },
-        { table: "진척검수중", count: 4 },
-        { table: "진척검수완료", count: 4 },
+        { table: "완료된조달계획", count: ${count1} },
+        { table: "진척검수중", count: ${count5} },
+        { table: "진척검수완료", count: ${count6} },
+        { table: "발주서진행중", count: ${count3} },
+        { table: "발주서마감완료", count:${count4} },
       ];
 
       // 데이터 가공

@@ -28,9 +28,9 @@ public class IssueServiceImpl implements IssueService{
 	}
 
 	@Override
-	public List<ContractDTO> contractlist() {
+	public List<ContractDTO> contractlist(String code) {
 		log.info("===============조달계획 계약서===============");
-		return mapper.contractlist();
+		return mapper.contractlist(code);
 	}
 
 

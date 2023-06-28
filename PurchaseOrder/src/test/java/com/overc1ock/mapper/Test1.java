@@ -1,5 +1,7 @@
 package com.overc1ock.mapper;
 
+import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 
 import org.junit.Test;
@@ -10,6 +12,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import com.overc1ock.domain.ContractDTO;
 import com.overc1ock.domain.Criteria;
+import com.overc1ock.domain.PisDTO;
 import com.overc1ock.domain.PpDTO;
 
 
@@ -23,14 +26,14 @@ public class Test1 {
 	@Autowired
 	PurchaseOrderMapper mapper;
 	
-	@Test
-	public void contractTest() {
-		List<ContractDTO> list = mapper.contractlist();
-		for(ContractDTO aa : list) {
-			log.info("결과는 ?"+aa);
-		}
-	
-	}
+//	@Test
+//	public void contractTest() {
+//		List<ContractDTO> list = mapper.contractlist();
+//		for(ContractDTO aa : list) {
+//			log.info("결과는 ?"+aa);
+//		}
+//	
+//	}
 	
 	@Test
 	public void searchTest() {
@@ -53,6 +56,10 @@ public class Test1 {
 		log.info(list);
 
 	}
+	
+	
+
+	
 	
 
 }

@@ -26,9 +26,35 @@ public class InspectionServiceImpl implements InspectionService{
 	}
 
 	@Override
-	public List<PisDTO> pislist() {
+	public List<PisDTO> pislist(String pi_code) {
 		log.info("===============검수 일정 리스트===============");
-		return mapper.pislist();
+		return mapper.pislist(pi_code);
+	}
+
+
+
+	@Override
+	public void piupdate(String pocode) {
+		mapper.piupdate(pocode);
+		
+	}
+
+	@Override
+	public void pisinput(PiDTO pidto) {
+		mapper.pisinput(pidto);	
+	}
+	
+
+	@Override
+	public void beforepisinput(PiDTO pidto) {
+		mapper.beforepisinput(pidto);
+		
+	}
+
+	@Override
+	public void pistext(PisDTO pisdto) {
+		mapper.pistext(pisdto);
+		
 	}
 
 }

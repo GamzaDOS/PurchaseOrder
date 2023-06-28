@@ -26,9 +26,11 @@ public class CloseServiceImpl implements CloseService{
 
 
 	@Override
-	public String saveDataToDatabase(String noteInput) {
-		return mapper.saveDataToDatabase(noteInput);
+	public void closelist2(String pocode) {
+		mapper.closelist2(pocode);
 		
 	}
+
+
 
 }

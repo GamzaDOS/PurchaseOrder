@@ -95,6 +95,11 @@ button[id="s2"] {
   cursor: pointer;
   float: right;
 }
+
+.v1{
+ color: blue;
+}
+
 </style>
 
 <body>
@@ -103,11 +108,9 @@ button[id="s2"] {
 							
 						<div id="modal" class="modal">
 						  <div class="modal-content">
-						    <h3>구매발주서 발행</h3>
-
-				    
-						    <form>
-						    
+						    <h3>구매발주서 발행</h3>				
+						       
+						    <form>						    
 						      <div class="form-group">
 						        <label for="deliverySite">납품현장 :</label>
 						        <input type="text" id="deliverySite" name="deliverySite" placeholder="납품현장을 입력하세요" required>
@@ -268,115 +271,55 @@ button[id="s2"] {
 					<!-- ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ 리스트 ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ -->
 					
 					
-			<table id="myTable" class="table table-bordered table-striped table-hover caption-top">
-			  <caption style="color: black;">
-			    <b>조달계획 목록</b>
-			  </caption>
-			  <div class="col-md-3">
-			    <button class="btn btn-primary" style="position: absolute; left: 1170px;" onclick="goprint()">구매발주서 발행</button>
-			  </div>
-			  <div class= "rain">
-			  <thead class="table-dark">
-			    <tr>
-			      <th scope="col" style="text-align: center;">순번</th>
-			      <th scope="col" style="text-align: center;">품목코드</th>
-			      <th scope="col" style="text-align: center;">품목명</th>
-			      <th scope="col" style="text-align: center;">소요량</th>
-			      <th scope="col" style="text-align: center;">조달납기</th>
-			      <th scope="col" style="text-align: center;">생산일</th>
-			      <th scope="col" style="text-align: center;">등록일</th>
-			      <th scope="col" style="text-align: center;">자재소요공정</th>
-			      <th scope="col" style="text-align: center;">계약서</th>
-			    </tr>
-			  </thead>
-			    </div>
-			  <tbody>
-			    <c:set value="0" var="no" />
-			    <c:forEach var="list" items="${completelist}">
-			      <tr>
-			        <td style="text-align: center;">${no = no+1}</td>
-			        <td style="text-align: center;"><span>${list.item_code}</span></td>
-			        <td style="text-align: center;"><span>${list.item_name}</span></td>
-			        <td style="text-align: center;"><span>${list.consumption}</span></td>
-			        <td style="text-align: center;">
-			          <span>
-			            <fmt:formatDate value="${list.procurement_date}" pattern="yyyy-MM-dd" />
-			          </span>
-			        </td>
-			        <td style="text-align: center;">
-			          <span>
-			            <fmt:formatDate value="${list.production_date}" pattern="yyyy-MM-dd" />
-			          </span>
-			        </td>
-			        <td style="text-align: center;">
-			          <span>
-			            <fmt:formatDate value="${list.pp_date}" pattern="yyyy-MM-dd" />
-			          </span>
-			        </td>
-			        <td style="text-align: center;"><span>${list.process}</span></td>
-			        <td style="text-align: center;"><span><button id ="alpha">계약서</button></span></td>
-			      </tr>
-			    </c:forEach>
-			  </tbody>			  
-			</table>
-			
-			
-<div class="showme">
-  <table id="secondTable" style="display: none;">
-    <thead class="table-dark">
-      <tr>
-        <th scope="col" style="text-align: center;"></th>
-        <th scope="col" style="text-align: center;">협력업체명</th>
-        <th scope="col" style="text-align: center;">품목코드</th>
-        <th scope="col" style="text-align: center;">품목명</th>
-        <th scope="col" style="text-align: center;">단가</th>
-      </tr>
-    </thead>
-    <tbody>
-      <c:set value="0" var="no" />
-      <c:forEach var="list" items="${contractlist}">
-        <tr>
-          <td style="text-align: center;">
-            <input type="checkbox" class="form-check-input" id="itemCodeCheck" name="itemCodeCheck" onclick="check(this)" />
-          </td>
-          <td style="text-align: center;"><span>${list.subcontractor_name}</span></td>
-          <td style="text-align: center;"><span>${list.item_code}</span></td>
-          <td style="text-align: center;"><span>${list.item_name}</span></td>
-          <td style="text-align: center;"><span>${list.supply_price}</span></td>
-        </tr>
-      </c:forEach>
-    </tbody>
-  </table>
-</div>
+		<table id="myTable" class="table table-bordered table-striped table-hover caption-top">
+		  <caption style="color: black;">
+		    <b>조달계획 목록</b>
+		  </caption>
+		  <button class="btn btn-primary" style="position: absolute; left: 1180px;" onclick="gogo()">구매발주서발행</button>
+		  
+		  <thead class="table-dark">
+		    <tr>
+		      <th scope="col" style="text-align: center;">순번</th>
+		      <th scope="col" style="text-align: center;">품목코드</th>
+		      <th scope="col" style="text-align: center;">품목명</th>
+		      <th scope="col" style="text-align: center;">소요량</th>
+		      <th scope="col" style="text-align: center;">조달납기</th>
+		      <th scope="col" style="text-align: center;">생산일</th>
+		      <th scope="col" style="text-align: center;">등록일</th>
+		      <th scope="col" style="text-align: center;">자재소요공정</th>
+		      <th scope="col" style="text-align: center;">계약서</th>
+		    </tr>
+		  </thead>
+		  <tbody>
+		    <c:set value="0" var="no" />
+		    <c:forEach var="list" items="${completelist}">
+		      <tr id="dada">		      
+		        <td style="text-align: center;">${no = no+1}</td>
+		        <td style="text-align: center;"><span>${list.item_code}</span></td>
+		        <td style="text-align: center;"><span>${list.item_name}</span></td>
+		        <td style="text-align: center;"><span>${list.consumption}</span></td>
+		        <td style="text-align: center;">
+		          <span>
+		            <fmt:formatDate value="${list.procurement_date}" pattern="yyyy-MM-dd" />
+		          </span>
+		        </td>
+		        <td style="text-align: center;">
+		          <span>
+		            <fmt:formatDate value="${list.production_date}" pattern="yyyy-MM-dd" />
+		          </span>
+		        </td>
+		        <td style="text-align: center;">
+		          <span>
+		            <fmt:formatDate value="${list.pp_date}" pattern="yyyy-MM-dd" />
+		          </span>
+		        </td>
+		        <td style="text-align: center;"><span>${list.process}</span></td>
+		        <td style="text-align: center;"><span><button class="alpha" id="${list.item_code}" >계약서</button></span></td>
+		      </tr>
+		    </c:forEach>
+		  </tbody>			  
+		</table>
 
-
-<div class="showme">
-  <table id="secondTable" style="display: none;">
-    <thead class="table-dark">
-      <tr>
-        <th scope="col" style="text-align: center;"></th>
-        <th scope="col" style="text-align: center;">협력업체명</th>
-        <th scope="col" style="text-align: center;">품목코드</th>
-        <th scope="col" style="text-align: center;">품목명</th>
-        <th scope="col" style="text-align: center;">단가</th>
-      </tr>
-    </thead>
-    <tbody>
-      <c:set value="0" var="no" />
-      <c:forEach var="list" items="${contractlist}">
-        <tr>
-          <td style="text-align: center;">
-            <input type="checkbox" class="form-check-input" id="itemCodeCheck" name="itemCodeCheck" onclick="check(this)" />
-          </td>
-          <td style="text-align: center;"><span>${list.subcontractor_name}</span></td>
-          <td style="text-align: center;"><span>${list.item_code}</span></td>
-          <td style="text-align: center;"><span>${list.item_name}</span></td>
-          <td style="text-align: center;"><span>${list.supply_price}</span></td>
-        </tr>
-      </c:forEach>
-    </tbody>
-  </table>
-</div>
 
       
 	<!-- ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ 리스트 끝 ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ -->
@@ -397,6 +340,7 @@ button[id="s2"] {
 			document.getElementById("order").style.fontWeight = "bold";
 		}
 	</script>
+	
 	<script>
 		$(document).ready(function() {
 			$('#startDate').change(function() {
@@ -423,7 +367,9 @@ button[id="s2"] {
 
 		});
 	</script>
+	
 	<!-- ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ모달 창 스크립트ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ -->
+	
 	<script>
 		function openModal() {
 		  document.getElementById("modal").style.display = "block";
@@ -470,51 +416,108 @@ button[id="s2"] {
 	<!-- ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ 테이블 스크립트ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ -->
 
 
-<script>
-  function toggleTable() {
-    var itemName = "${list.item_name}";	// 작성중  
-    var table = document.getElementById("secondTable");
-    var display = table.style.display;
-    if (display === "none") {
-      table.style.display = "block";
-    } else {
-      table.style.display = "none";
-    }
-  }
 
-  var alphaButton = document.getElementById("alpha");
-  alphaButton.addEventListener("click", toggleTable);
+
+<script>
+
+$(document).ready(function(){
+    $(document).on("click", ".alpha", function(){
+ 
+        var aa = $(this).attr("id");
+        console.log(aa);
+        
+        var bb=$(this);
+        
+        
+        if(bb.hasClass("togle")){
+        
+        	bb.removeClass("togle");
+        	bb.closest("tr").next().remove(); 
+        }
+        else{
+        	bb.addClass("togle");
+        
+        $.ajax({
+            url: "http://localhost:8081/api/issue2?aa="+aa,
+            method: "GET",
+            dataType: "json",
+            success: function(response){
+            	
+            	console.log("성공",response);// 불러옴
+            	var str="";
+            	
+            		for(var i=0; i<response.length;i++){
+            	    str += "<tr>" +"<td style='text-align: center;'>" +
+                    "<input type='radio' name='itemCodeCheck' onclick='check(this)' />" +
+                    
+                    "</td>"+  "<td id='z1' style='text-align: center'; hidden>" + response[i].contract_code + "</td>" +
+                    "</td>"+  "<td style='text-align: center;'>" + response[i].subcontractor_name + "</td>" +
+                    "</td>"+  "<td style='text-align: center'; hidden>" + response[i].item_code + "</td>" +
+                     "<td style='text-align: center;'>" + response[i].supply_price + "</td>"+ "<tr>"  ;
+            		} 
+            		            	           	
+                var rowrow = "<tr>" +
+                "<td colspan='9'>" +
+                "<table id='secondTable' style='text-align: right;'>" +
+                "<thead class='table-dark'>" +
+                "<tr>" +
+                "<th scope='col' style='text-align: center;' class='v1'></th>" +
+                "<th scope='col' style='text-align: center;' class='v1'>협력업체명</th>" +
+                "<th scope='col' style='text-align: center;' class='v1'>단가</th>" +
+                "</tr>" +
+                "</thead>" +
+                "<tbody>"                
+                + 
+                str+
+                    "</tr>"          
+            + "</tbody>" +
+                "</table>" +
+                "</tr>";
+	 		console.log(rowrow);	 		          
+	 		bb.closest("tr").after(rowrow);
+               
+            }//function
+
+          
+   	 });//ajax
+    } //else
+  }); //click  
+    
+}); //document ready
 </script>
 
-<!--  체크박스 중복 제거 -->
-
 <script>
-function check(checkbox) {
-  var checkboxes = document.getElementsByName("itemCodeCheck");
-  for (var i = 0; i < checkboxes.length; i++) {
-    if (checkboxes[i] !== checkbox) {
-      checkboxes[i].checked = false;
-    }
-  }
+
+function gogo() {
+	var gogo2 = $("input[name='itemCodeCheck']:checked").closest("tr").find(".z1").text();
+	console.log(gogo2);
+	
+    var ball = [];	
+    console.log('1?',ball);
+
+	$("input[name='itemCodeCheck']:checked").closest("table").find("tbody tr").each(function() { // 체크박스 근처 검사 
+		
+	    var radio1 = $(this).find("td:first-child input[type='radio']").is(":checked"); // 부모 요소 안의 첫번째 라디오체크의 선택자
+	    
+	    if (radio1) {
+	        var find1 = $(this).find("td");
+	        var contract_code = $(find1[1]).text();
+	        var itemcode = $(find1[3]).text();
+
+	        ball.push(contract_code);
+	        ball.push(itemcode);
+	    }
+	});
+	
+    var url = "http://localhost:8081/purchaseorder/print?contract_code=" + encodeURIComponent(ball[0]) + "&itemcode=" + encodeURIComponent(ball[1]);
+    window.open(url);
 }
+
+
+
 </script>
 
-<!-- 발행화면 으로 이동 -->
-<script>
-var po_data=0;
-$(document).on("change", 'input[type=radio][name="po_code"]', function() {
-	po_data=$('input[name=po_code]:checked').val();
-	console.log(po_data);
-});
 
-function goprint(){
-	var newForm=$('<form></form>')
-	newForm.attr("action","issue_print");
-	newForm.append($('<input/>',{type:'hidden', name:'po_code', value:po_data}))
-	newForm.appendTo('body')
-	newForm.submit();
-}
-</script>
 
 
 </body>

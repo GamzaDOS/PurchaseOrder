@@ -9,6 +9,6 @@ import com.overc1ock.domain.PpDTO;
 public interface IssueService {
 	
 	List<PpDTO>completelist(Criteria cri);
-	List<ContractDTO>contractlist();
+	List<ContractDTO>contractlist(String code);
 
 }

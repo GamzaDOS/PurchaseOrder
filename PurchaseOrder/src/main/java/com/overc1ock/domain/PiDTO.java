@@ -10,12 +10,15 @@ import lombok.Data;
 @Data
 public class PiDTO {
 	
-	private Integer item_code;
+	private String item_code;
+	private String pis_name;
+	private Date pis_date;
+	private String employee_name;
 	private String subcontractor_name;
 	private String item_name;
-	private String employee_name;
-	private Date procurement_date;
 	private Date po_date;
 	private Integer pi_status;
-
+	private String po_code;
+	private String pi_code;
+	
 }

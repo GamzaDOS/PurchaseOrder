@@ -10,8 +10,9 @@ import lombok.Data;
 @Data
 public class PpDTO {
 	
-	private Integer item_code;
+	private String item_code;
 	private String item_name;
+	private String pp_code;
 	private Integer consumption;
 	private Date procurement_date;
 	private Date production_date;

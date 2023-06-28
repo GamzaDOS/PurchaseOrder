@@ -33,4 +33,19 @@ public class ReportServiceImpl implements ReportService{
 		return mapper.closecount(cri);
 	}
 
+	@Override
+	public int closecount2(Criteria cri) {
+		return mapper.closecount2(cri);
+	}
+
+	@Override
+	public int pilistcount1(Criteria cri) {
+		return mapper.pilistcount1(cri);
+	}
+
+	@Override
+	public int pilistcount2(Criteria cri) {
+		return mapper.pilistcount2(cri);
+	}
+
 }

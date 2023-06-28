@@ -80,17 +80,18 @@ button[id="s1"]:hover {
 <body>
 		<!-- ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ모달창ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ -->	
 						<div id="modal" class="modal">
-						<form action="close" method="post">
-						  <div class="modal-content">						   
-						    <h4>결과입력</h4>
-					        <div id="modalContent">
-					            <textarea id="noteInput" rows="4" cols="50"></textarea>
-					            <br>
-					            <input type="submit" value="저장">
-					            <button onclick="closeModal()">닫기</button>
-					        </div>
-						  </div>
-						  </form>
+					<form action="close" method="get">
+					       <input type="hidden" name="poCodeInput" value="">
+					  <div class="modal-content">
+					    <h4>결과입력</h4>
+					    <div id="modalContent">
+					      <textarea id="noteInput" rows="4" cols="50"></textarea>
+					      <br>
+					      <input type="submit" id="go1" value="저장" onclick="saveNote()">
+					      <button onclick="closeModal()">닫기</button>
+					    </div>
+					  </div>
+					</form>
 						</div>								
 		<!-- ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ모달창 끝ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ -->	
 	<div>
@@ -214,7 +215,7 @@ button[id="s1"]:hover {
 						<caption style="color: black;">
 							<b>조달계획 목록</b>
 						</caption>
-						<button class="btn btn-primary" style="position: absolute; left: 1190px;" onclick="openModal()">결과 입력</button>
+						<button class="btn btn-primary" style="position: absolute; left: 1190px;" onclick="openModal(document.querySelector('[name=poCodeInput]:checked').value)">결과 입력</button>
 					
 						<thead class="table-dark">
 							<tr>
@@ -235,8 +236,10 @@ button[id="s1"]:hover {
 							<c:set value="0" var="no" />
 							<c:forEach var="list" items="${closelist}">
 								<tr>
-									<td style="text-align: center;width: 50px;"><input type="checkbox" class="form-check-input" id="itemCodeCheck" 
-									name="itemCodeCheck" onclick='check(this)' /></td>
+									<td style="text-align: center;width: 50px;">
+									  <input type="checkbox" class="form-check-input" id="${list.po_code}"
+									  value="${list.po_code}" name="poCodeInput" onclick="check(this)" />
+									</td>
 									<td style="text-align: center; width: 70px;">${no = no+1}</td>
 									<td style="text-align: center; width: 80px;"><span>${list.po_code}</span></td>
 									<td style="text-align: center;"><span>${list.item_name}</span></td>
@@ -253,12 +256,12 @@ button[id="s1"]:hover {
 								</c:forEach>
 								</tbody>
 								</table>
+								
 								<br>
-			</div>
-		</div>
-	</div>
-	
-	<!-- //wrap -->
+								</div>
+							</div>
+						</div>
+						
 	
 <input type="hidden" value="2" id="flag">
 <script src="/resources/js/core/popper.min.js" type="text/javascript"></script>
@@ -278,63 +281,76 @@ button[id="s1"]:hover {
 </script>
 				<!-- ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ조회 스크립트ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ -->
 <script>
-		$(document).ready(function() {
-			$('#startDate').change(function() {
-				if ($('#startDate').val() != ''){
-					$('#endDate').attr('required', true);
-					console.log("시작일 값 있음");
-				}
-				else{
-					$('#endDate').attr('required', false);
-					console.log("시작일 값 없음");
-				}
-			});
-			$('#endDate').change(function() {
-				if ($('#endDate').val() != ''){
-					$('#startDate').attr('required', true);
-					console.log("종료일 값 있음");
-				}
-				else{
-					$('#startDate').attr('required', false);
-					console.log("종료일 값 없음");
-				}
-			});
-
+$(document).ready(function() {
+    $('#startDate').change(function() {
+        if ($('#startDate').val() != ''){
+            $('#endDate').attr('required', true);
+            console.log("시작일 값 있음");
+        }
+        else{
+            $('#endDate').attr('required', false);
+            console.log("시작일 값 없음");
+        }
+    });
+    
+    $('#endDate').change(function() {
+        if ($('#endDate').val() != ''){
+            $('#startDate').attr('required', true);
+            console.log("종료일 값 있음");
+        }
+        else{
+            $('#startDate').attr('required', false);
+            console.log("종료일 값 없음");
+        }
+    });
+});
 </script>
 				<!-- ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ모달창 스크립트ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ -->
 <script>
-        function openModal() {
-            document.getElementById("modal").style.display = "block";
-        }
+function openModal(poCode) {
+	  var hiddenInput = document.querySelector('input[name="poCodeInput"]');
+	  hiddenInput.value = poCode;
+	  var zeta = document.querySelector('[name="poCodeInput"]:checked');
+	  var poCodeValue = zeta.value;
+	  document.getElementById("modal").style.display = "block";
+	  console.log('poCode의 값:', poCodeValue);
+	}
 
-        function closeModal() {
-        	  var modal = document.getElementById("modal");
-        	  modal.style.display = "none";
-        	  
-        	  var noteInput = document.getElementById("noteInput");
-        	  noteInput.value = ""; // 내용 초기화
-        	}
+  function closeModal() {
+    var modal = document.getElementById("modal");
+    modal.style.display = "none";
 
+    var noteInput = document.getElementById(`noteInput-${list.po_code}`);
+    noteInput.value = ""; // 내용 초기화
+  }
 
-        function saveNote() {
-            var note = document.getElementById("noteInput").value;
-            //db에 저장하는건 나중에 구현
-            closeModal();
-        }
+  function saveNote() {
+
+    closeModal();
+  }    
 </script>
+
+
 
 <!--  체크박스 중복 제거 -->
 
 <script>
 function check(checkbox) {
-  var checkboxes = document.getElementsByName("itemCodeCheck");
-  for (var i = 0; i < checkboxes.length; i++) {
-    if (checkboxes[i] !== checkbox) {
-      checkboxes[i].checked = false;
+    var checkboxes = document.getElementsByName("poCodeInput");
+    for (var i = 0; i < checkboxes.length; i++) {
+        if (checkboxes[i] !== checkbox) {
+            checkboxes[i].checked = false;
+        } else {
+            if (checkbox.checked) {
+                var itemName = checkbox.id; // 체크된 체크박스의 아이템 이름 가져오기
+                console.log("선택된 아이템 이름: " + itemName);
+            }
+        }
     }
-  }
 }
 </script>
+
+
 
 </body> 
 </html>

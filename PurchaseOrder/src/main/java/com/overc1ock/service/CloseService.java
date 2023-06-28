@@ -8,6 +8,6 @@ import com.overc1ock.domain.Criteria;
 public interface CloseService {
 	
 	List<CloseDTO>closelist(Criteria cri);
-	String saveDataToDatabase(String noteInput);
+	void closelist2(String pocode);
 
 }

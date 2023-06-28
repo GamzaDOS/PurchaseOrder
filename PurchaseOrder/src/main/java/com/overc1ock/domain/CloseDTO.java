@@ -12,7 +12,6 @@ public class CloseDTO {
 	
 	private Integer po_code;
 	private String item_name;
-	private String subcontractor_name;
 	private String delivery_place;
 	private String payment;
 	private String delivery_person;

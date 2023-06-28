@@ -74,6 +74,11 @@ button[id="s1"] {
 button[id="s1"]:hover {
   background-color: #45a049;
 }
+
+.v1{
+ color: blue;
+}
+
 </style>
 
 
@@ -83,10 +88,14 @@ button[id="s1"]:hover {
 						  <div class="modal-content">						   
 						    <h4>비고</h4>
 					        <div id="modalContent">
-					            <textarea id="noteInput" rows="4" cols="50"></textarea>
-					            <br>
-					            <button onclick="saveNote()">저장</button>
-					            <button onclick="closeModal()">닫기</button>
+					        ${response[0].pis_code}
+						<form method="post" action="/purchaseorder/pistext">
+						    <textarea id="noteInput" rows="4" cols="50" name="pis_text">${response[0].pis_text}</textarea>
+						    <input type="hidden" id="noteInput2"  name="pis_code" value="${response[0].pis_code}">
+						    <br>
+						    <button type="submit">저장</button>
+						    <button onclick="closeModal()">닫기</button>
+						</form>
 					        </div>
 						  </div>
 						</div>								
@@ -180,7 +189,7 @@ button[id="s1"]:hover {
 											style="border: 1px solid #ced4da;">
 										<datalist id="productName"
 											style="border: 1px solid #DBE0E4;">
-											<c:forEach var="list" items="${pnList }">
+											<c:forEach var="list" items="${piList }">
 												<option value="${list.product_name }"></option>
 											</c:forEach>
 										</datalist>
@@ -212,29 +221,31 @@ button[id="s1"]:hover {
 						d="M8.982 1.566a1.13 1.13 0 0 0-1.96 0L.165 13.233c-.457.778.091 1.767.98 1.767h13.713c.889 0 1.438-.99.98-1.767L8.982 1.566zM8 5c.535 0 .954.462.9.995l-.35 3.507a.552.552 0 0 1-1.1 0L7.1 5.995A.905.905 0 0 1 8 5zm.002 6a1 1 0 1 1 0 2 1 1 0 0 1 0-2z" />
 		                </symbol>
 		            </svg>
-
+		            
+		            
+					<form id="myForm" action="inspection" method="GET">
+					
 					<table id='myTable'
 						class="table table-bordered table-striped table-hover caption-top">
 						<caption style="color: black;">
 							<b>조달계획 목록</b>
 						</caption>
 
-						<button class="btn btn-primary" style="position: absolute; left: 1250px;">완료</button>
+						<button type="submit" class="btn btn-primary" style="position: absolute; left: 1250px;"  id ="isave">완료</button>
 	
 							
 							
 						<thead class="table-dark">
 							<tr>
 								<th scope="col" style="text-align: center;"></th>
-								<th scope="col" style="text-align: center;">회사명</th>
-								<th scope="col" style="text-align: center;">품목명</th>
-								<th scope="col" style="text-align: center; width: 110px;">발주담당자</th>
-								<th scope="col" style="text-align: center;">등록일</th>
+								<th scope="col" style="text-align: center; width: 110px;">품목코드</th>
+								<th scope="col" style="text-align: center; width: 110px;">품목명</th>
+								<th scope="col" style="text-align: center; width: 110px;">협력업체명</th>
+								<th scope="col" style="text-align: center; width: 140px;">발주서등록일</th>
 								<th scope="col" style="text-align: center; width: 100px;">완료여부</th>
 								<th scope="col" style="text-align: center;">계획명</th>
 								<th scope="col" style="text-align: center;">검수일</th>
-								<th scope="col" style="text-align: center;">담당자</th>
-								<th scope="col" style="text-align: center; width: 100px;">완료율</th>								
+								<th scope="col" style="text-align: center;">담당자</th>								
 								<th scope="col" style="text-align: center; width: 100px;"></th>
 								<th scope="col" style="text-align: center; width: 100px;"></th>
 							</tr>
@@ -243,52 +254,36 @@ button[id="s1"]:hover {
 						<tbody>
 							<c:set value="0" var="no" />
 							<c:forEach var="list" items="${pilist}">
+															
 								<tr>
 									<td style="text-align: center;width: 50px;"><input type="checkbox" class="form-check-input" id="itemCodeCheck" 
-									name="itemCodeCheck" onclick='check(this)' /></td>
-									<td style="text-align: center;"><span>${list.subcontractor_name}</span></td>
+									name="checkbox"  value="${list.po_code}" onclick='check(this)' /></td>
+									</form>
+									<form action="/purchaseorder/inspection2" method="post">
+									<td style="text-align: center;" hidden><span>${list.po_code}</span></td>
+									<td style="text-align: center;" hidden><span>${list.pi_code}</span></td>
+									<td style="text-align: center;"><span>${list.item_code}</span></td>
 									<td style="text-align: center;"><span>${list.item_name}</span></td>
-									<td style="text-align: center;"><span>${list.employee_name}</span></td>
+									<td style="text-align: center;"><span>${list.subcontractor_name}</span></td>
 									<td style="text-align: center;"><span><fmt:formatDate
 												value="${list.po_date}"
 												pattern="yyyy-MM-dd " /></span></td>
-									<td style="text-align: center;"><span>${(list.pi_status == 0) ? '미완료' : '완료'}</span></td>							
-									<td style="text-align: center; " ><input type="text" id="input1" size="10" /></td>
-									<td style="text-align: center; "><input type="date" id="input2" size="10" /></td>
-									<td style="text-align: center;"><input type="text" id="input3" size="10" /></td>		
-									<td style="text-align: center;"><input type="number" id="input4" style="width: 100px;"/></td>
-									<td style="text-align: center;"><span><button id ="isave">저장</button></span></td>		
-									<td style="text-align: center;"><span><button id ="alpha">진척계획</button></span></td>		
-											
+									<td style="text-align: center;"><span>${(list.pi_status == 0) ? '미완료' : '완료'}</span></td>
+										
+									<td style="text-align: center; " ><input type="text" id="input1" name="pis_name" value="${list.pis_name}" size="10" /></td>
+									<td style="text-align: center; "><input type="date" id="input2" name="pis_date" value="${list.pis_date}" size="10" /></td>
+									<td style="text-align: center;"><input type="text" id="input3" name="employee_name" value="${list.employee_name}" size="10" /></td>		
+									<td style="text-align: center;"><span><button type="submit" >저장</button></span></td>		
+									<td style="text-align: center;"><span><button type="button" class="zzz" id ="${list.po_code}" >일정</button></span></td>
+									<input type="hidden" name="po_code" value="${list.po_code}">
+  									<input type="hidden" name="pi_code" value="${list.pi_code}">
+									</form>																										
 								</tr>
 								</c:forEach>
 								</tbody>
 								</table>
+									
 								<br>
-								
-			<table id="secondTable" style="display: none;">
-			  <thead class="table-dark">
-			  <tr>
-				<th scope="col" style="text-align: center; width: 300px;">검수계획명</th>
-				<th scope="col" style="text-align: center;">검수일</th>
-				<th scope="col" style="text-align: center;">담당자</th>
-				<th scope="col" style="text-align: center;">완료율</th>
-				<th scope="col" style="text-align: center;"></th>
-			    </tr>
-			  </thead>
-			  <tbody>
-			    <c:set value="0" var="no" />
-			    <c:forEach var="list" items="${pislist}">
-			      <tr>
-				<td style="text-align: center;"><span>${list.pis_name}</span></td>
-				<td style="text-align: center;"><span>${list.pis_date}</span></td>
-				<td style="text-align: center;"><span>${list.employee_name}</span></td>
-				<td style="text-align: center;"><span>${list.completion_rate}</span></td>
-				<td style="text-align: center; width: 70px;"><span><button onclick="openModal()">비고</button></span></td>
-			      </tr>
-			    </c:forEach>
-			  </tbody>
-			</table>
 
 			</div>
 		</div>
@@ -370,25 +365,83 @@ button[id="s1"]:hover {
         }
     </script>
     <!-- 테이블 스크립트 -->
-    	<script>
-    	  function toggleTable() { 
-    		    var table = document.getElementById("secondTable");
-    		    var display = table.style.display;
-    		    if (display === "none") {
-    		      table.style.display = "block";
-    		    } else {
-    		      table.style.display = "none";
-    		    }
-    		  }
+<script>
+$(document).ready(function(){	
+	$(document).on("click", ".zzz", function(){ 	
+		var aa = $(this).attr("id");
+		console.log(aa);
+		
+		var bb=$(this);
+		
+	       if(bb.hasClass("togle")){
+	           
+	        	bb.removeClass("togle");
+	        	bb.closest("tr").next().remove(); 
+	        }
+	        else{
+	        	bb.addClass("togle");
 
-    		  var alphaButton = document.getElementById("alpha");
-    		  alphaButton.addEventListener("click", toggleTable);
-	</script>
+		
+        $.ajax({
+            url: "http://localhost:8081/api/inspection2?aa="+aa,
+            method: "GET",
+            dataType: "json",
+            success: function(response){    	
+            	console.log("성공",response);// 불러옴
+				
+            	
+                var noteInput = $("#noteInput");
+                noteInput.val(response[0].pis_text);
+                
+                var noteInput2 = $("#noteInput2");
+                noteInput2.val(response[0].pis_code);
+                
+            	var str="";
+            	
+            	
+        		for(var i=0; i<response.length;i++){
+        	    str += "<tr>"+
+  		     
+  		     
+  			"<td style='text-align: center;'>"+ response[i].pis_name + "</td>" +
+  			"<td style='text-align: center;'>" + response[i].pis_date + "</td>" +
+  			"<td style='text-align: center;'>" + response[i].employee_name + "</td>" +
+  			"<td style='text-align: center; width: 70px;'>" + "<button type='button' onclick='openModal()'> 비고 </button>"+"</td>"+
+  		      "</tr>";
+  		      
+  		      
+        		}   
+		
+		var rowrow = 
+			"<tr>" +
+		"<td colspan='12'>" +
+		"<table id='secondTable' style='text-align: right;'>" +
+		  "<thead class='table-dark'>" +
+		  "<tr>" +
+			"<th scope='col' style='text-align: center; ' class='v1'>검수계획명</th>" +
+			"<th scope='col' style='text-align: center;' class='v1'>검수일</th>"+
+			"<th scope='col' style='text-align: center;' class='v1'>담당자</th>"+
+			"<th scope='col' style='text-align: center;'></th>"+
+		    "</tr>"+
+		  "</thead>"+
+		  "<tbody>"+
+		  str +		    
+		  "</tbody>"+
+		"</table>"+ "</td>"+"</tr>";
+ 		console.log(rowrow);	 		          
+ 		bb.closest("tr").after(rowrow);
+	
+        }// function 
+        });//ajax
+	        } //else
+	}); //click
+}); //document ready
+</script>
 	<!--  체크박스 중복 제거 -->
 
 <script>
 function check(checkbox) {
-  var checkboxes = document.getElementsByName("itemCodeCheck");
+  var checkboxes = document.getElementsByName("checkbox");
   for (var i = 0; i < checkboxes.length; i++) {
     if (checkboxes[i] !== checkbox) {
       checkboxes[i].checked = false;
@@ -396,4 +449,23 @@ function check(checkbox) {
   }
 }
 </script>
+
+
+<script>
+document.getElementById("isave").addEventListener("click", function(event) {
+
+
+    var form = document.getElementById("myForm");
+    var checkbox = form.querySelector("input[name='checkbox']:checked");
+    if (checkbox) {
+      var value = checkbox.value;
+      var url = "http://localhost:8081/purchaseorder/inspection2?po_code=" + encodeURIComponent(value);
+      window.location.href = url;
+    }
+});
+</script>
+
+
+
+
 </html>
