@@ -20,16 +20,13 @@
     INNER JOIN item_use_plan ON item.item_code = item_use_plan.item_code
     INNER JOIN procurement_plan ON item_use_plan.iup_code = procurement_plan.iup_code
     INNER JOIN products_production_plan ON item_use_plan.ppp_code = products_production_plan.ppp_code
-    
-  <where>
+  	where procurement_plan.pp_status = 0;	
     <if test="startDate != null and startDate != '' and endDate != null and endDate != ''">
       AND pp_date BETWEEN DATE(#{startDate}) AND DATE(#{endDate}) + 1
     </if>
     <if test="item_name != null and item_name != ''">
       AND item_name LIKE CONCAT('%', #{item_name}, '%')
     </if>
-     AND procurement_plan.pp_status = 1 and procurement_plan.po_code is null 
-  </where>
 </select>
 
 	<select id="contractlist" resultType="com.overc1ock.domain.ContractDTO"> 
@@ -57,9 +54,9 @@
     INNER JOIN item_use_plan ON item.item_code = item_use_plan.item_code
     INNER JOIN procurement_plan ON item_use_plan.iup_code = procurement_plan.iup_code
     INNER JOIN products_production_plan ON item_use_plan.ppp_code = products_production_plan.ppp_code
-    where procurement_plan.pp_status = 1 and procurement_plan.po_code is null and item.item_code = #{code}
+    where procurement_plan.pp_status = 0  and item.item_code = #{code}
   ) t1 on contract.item_code = t1.item_code 
-  where contract.contract_code = #{code2};
+  where contract.contract_code = #{code2}
 </select>
 
 <update id="printupdate" parameterType="com.overc1ock.domain.PoDTO">
@@ -71,6 +68,13 @@ update procurement_plan set po_code = #{po_code}  where pp_code = #{pp_code}
 	insert into purchase_order(delivery_place,delivery_tel,delivery_person,ex_works,inspection_method,payment,po_text) 
 	values(#{delivery_place},#{delivery_tel},#{delivery_person},#{ex_works},#{inspection_method},#{payment},#{po_text})
 	</insert >
+	
+		<insert  id="enterpo" useGeneratedKeys="true" keyProperty="po_code" parameterType="com.overc1ock.domain.PoDTO">
+	insert into purchase_order(delivery_place,delivery_tel,delivery_person,ex_works,inspection_method,payment,po_text) 
+	values(#{delivery_place},#{delivery_tel},#{delivery_person},#{ex_works},#{inspection_method},#{payment},#{po_text})
+	</insert >
+	
+	
 
 	<insert  id="enterpojoin" parameterType="com.overc1ock.domain.PoDTO">
 insert into contract_has_purchase_order(contract_code,po_code) values(#{contract_code},#{po_code});
@@ -82,15 +86,13 @@ insert into contract_has_purchase_order(contract_code,po_code) values(#{contract
       inner join contract on item.item_code = contract.item_code
       inner join contract_has_purchase_order on contract.contract_code = contract_has_purchase_order.contract_code
       inner join purchase_order on contract_has_purchase_order.po_code = purchase_order.po_code
-      inner join progress_inspection on purchase_order.po_code = progress_inspection.po_code
-	  <where>
+      inner join progress_inspection on purchase_order.po_code = progress_inspection.po_code order by item_code
     <if test="startDate != null and startDate != '' and endDate != null and endDate != ''">
       AND po_date BETWEEN DATE(#{startDate}) AND DATE(#{endDate}) + 1
     </if>
     <if test="item_name != null and item_name != ''">
       AND item_name LIKE CONCAT('%', #{item_name}, '%')
     </if>
-  </where>
 	</select>
 	
 	<update id="piupdate" >
@@ -112,16 +114,12 @@ insert into contract_has_purchase_order(contract_code,po_code) values(#{contract
 	</update>
 
 <insert id="pisinput" parameterType="com.overc1ock.domain.PiDTO">
-  INSERT INTO progress_inspection_schedule (pis_name, pis_date, employee_name, pi_code)
-  SELECT #{pis_name}, #{pis_date}, #{employee_name}, pi_code
-  FROM progress_inspection
-  WHERE pi_code = #{pi_code} AND #{pis_name} IS NOT NULL AND #{pis_date} IS NOT NULL AND #{employee_name} IS NOT NULL
+insert into progress_inspection_schedule(pis_name,pis_date,employee_name,pi_code) values (#{pis_name},#{pis_date},#{employee_name},(SELECT pi_code FROM progress_inspection WHERE pi_code = '#{pi_code}))
 </insert>
 	
 <insert id="beforepisinput" parameterType="com.overc1ock.domain.PiDTO">
   INSERT INTO progress_inspection (po_code)
   SELECT #{po_code}
-  WHERE #{po_code} IS NOT NULL
 </insert>
 	
 	
@@ -154,26 +152,26 @@ insert into contract_has_purchase_order(contract_code,po_code) values(#{contract
 	
 	<select id="contractlistCount"  resultType="int">
   SELECT COUNT(*) AS row_count
-  FROM item
-  INNER JOIN item_use_plan ON item.item_code = item_use_plan.item_code
-  INNER JOIN procurement_plan ON item_use_plan.iup_code = procurement_plan.iup_code
-  INNER JOIN products_production_plan ON item_use_plan.ppp_code = products_production_plan.ppp_code
+    FROM item
+    INNER JOIN item_use_plan ON item.item_code = item_use_plan.item_code
+    INNER JOIN procurement_plan ON item_use_plan.iup_code = procurement_plan.iup_code
+    INNER JOIN products_production_plan ON item_use_plan.ppp_code = products_production_plan.ppp_code
   <where>
     <if test="startDate != null and startDate != '' and endDate != null and endDate != ''">
       AND pp_date BETWEEN DATE(#{startDate}) AND DATE(#{endDate}) + 1
     </if>
-    AND procurement_plan.pp_status = 1
+    AND procurement_plan.pp_status = 0 and procurement_plan.po_code is null
     </where>
 	</select>
 	
 	<select id="closecount"  resultType="int">
 	SELECT COUNT(*) AS data_count
-FROM item
-INNER JOIN contract ON item.item_code = contract.item_code
-INNER JOIN contract_has_purchase_order ON contract.contract_code = contract_has_purchase_order.contract_code
-INNER JOIN purchase_order ON contract_has_purchase_order.po_code = purchase_order.po_code
-INNER JOIN progress_inspection ON purchase_order.po_code = progress_inspection.po_code
-	<where>
+	FROM item
+	INNER JOIN contract ON item.item_code = contract.item_code
+	INNER JOIN contract_has_purchase_order ON contract.contract_code = contract_has_purchase_order.contract_code
+	INNER JOIN purchase_order ON contract_has_purchase_order.po_code = purchase_order.po_code
+	INNER JOIN progress_inspection ON purchase_order.po_code = progress_inspection.po_code
+		<where>
 	  <if test="startDate != null and startDate != '' and endDate != null and endDate != ''">
 	    AND po_date BETWEEN DATE(#{startDate}) AND DATE(#{endDate}) + 1
 	  </if>
@@ -183,11 +181,11 @@ INNER JOIN progress_inspection ON purchase_order.po_code = progress_inspection.p
 	
 		<select id="closecount2"  resultType="int">
 	SELECT COUNT(*) AS data_count
-FROM item
-INNER JOIN contract ON item.item_code = contract.item_code
-INNER JOIN contract_has_purchase_order ON contract.contract_code = contract_has_purchase_order.contract_code
-INNER JOIN purchase_order ON contract_has_purchase_order.po_code = purchase_order.po_code
-INNER JOIN progress_inspection ON purchase_order.po_code = progress_inspection.po_code
+	FROM item
+	INNER JOIN contract ON item.item_code = contract.item_code
+	INNER JOIN contract_has_purchase_order ON contract.contract_code = contract_has_purchase_order.contract_code
+	INNER JOIN purchase_order ON contract_has_purchase_order.po_code = purchase_order.po_code
+	INNER JOIN progress_inspection ON purchase_order.po_code = progress_inspection.po_code
 	<where>
 	  <if test="startDate != null and startDate != '' and endDate != null and endDate != ''">
 	    AND po_date BETWEEN DATE(#{startDate}) AND DATE(#{endDate}) + 1

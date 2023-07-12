@@ -63,17 +63,22 @@ public class PurchaseOrderController {
 		model.addAttribute("pilist",inspectionservice.pilist(cri));
 		String pocode = request.getParameter("po_code");		
 		log.info("과연 ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡpo는" + pocode);
-		inspectionservice.piupdate(pocode);	
-		inspectionservice.pisinput(piDTO);
-		inspectionservice.beforepisinput(piDTO);
-		log.info("과연 ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡinspection는" + pocode);
 		
+
+		if(pocode != null) { 
+		inspectionservice.piupdate(pocode);	
+		}
+		log.info("과연 ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡinspection는" + pocode);		
 	}
 	
-	@PostMapping("/inspection2")
+	@GetMapping("/inspection2")
 	public String inspection2(@ModelAttribute PiDTO piDTO) {
-	    inspectionservice.pisinput(piDTO);
-	    inspectionservice.beforepisinput(piDTO);
+		
+		
+		if(piDTO != null) {    	
+		    inspectionservice.beforepisinput(piDTO);
+		    inspectionservice.pisinput(piDTO);
+		}
 	    log.info("inspection은: " + piDTO);
 	    return "redirect:/purchaseorder/inspection";
 	}

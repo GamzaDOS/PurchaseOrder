@@ -23,7 +23,7 @@
 <link rel="stylesheet" href="/resources/css/custom.css" type="text/css" />
 <link rel="stylesheet" href="/resources/css/core/flag-icon.min.css"
 	type="text/css" />
-<title>출고처리</title>
+<title>구매발주서 발행</title>
 <script type="text/javascript" src="/resources/js/navbar-scripts.js"></script>
 <script src="https://code.jquery.com/jquery-3.7.0.js"
 	integrity="sha256-JlqSTELeR4TLqP0OG9dxM7yDPqX1ox/HfgiSLBj8+kM="
@@ -157,7 +157,7 @@ button[id="s2"] {
 			<nav class="navbar navbar-expand-lg navbar-dark bg-dark"
 				style="position: relative;">
 				<div class="container-fluid">
-					<a class="navbar-brand" onclick="location.href='index1'">
+					<a class="navbar-brand" onclick="location.href='/'">
 						<h2>
 							<b>조달구매시스템</b>
 						</h2>
@@ -182,20 +182,25 @@ button[id="s2"] {
 			<div class="area"></div>
 			<nav class="main-menu">
 				<ul>
-					<li class="has-subnav" style="font-size: 10px;"><a href="#"
+					<li class="has-subnav" style="font-size: 10px;"><a href="/registerinfo/subcontractor"
 						style="height: 50px;" id="procurement">
 							<div class="nav-text" style="position: relative; left: 10px;">
 								조달 관리</div>
 					</a></li>
-					<li class="has-subnav" style="font-size: 10px;"><a href="#"
+					<li class="has-subnav" style="font-size: 10px;"><a href="/purchaseorder/issue"
 						style="height: 50px;" id="order">
 							<div class="nav-text" style="position: relative; left: 10px;">
 								발주 관리</div>
 					</a></li>
-					<li class="has-subnav" style="font-size: 10px;"><a href="#"
+					<li class="has-subnav" style="font-size: 10px;"><a href="/stockmanagement/inbound"
 						style="height: 50px;" id="stock">
 							<div class="nav-text" style="position: relative; left: 10px;">
 								자재 관리</div>
+					</a></li>
+					<li class="has-subnav" style="font-size: 10px;"><a href="/registerinfo/subcontractor"
+						style="height: 50px;" id="stock">
+							<div class="nav-text" style="position: relative; left: 10px;">
+								정보 등록</div>
 					</a></li>
 				</ul>
 			</nav>
@@ -314,7 +319,7 @@ button[id="s2"] {
 		          </span>
 		        </td>
 		        <td style="text-align: center;"><span>${list.process}</span></td>
-		        <td style="text-align: center;"><span><button class="alpha" id="${list.item_code}" >계약서</button></span></td>
+		        <td style="text-align: center;"><span><button class="alpha" id="${list.item_code}" >계약서선택</button></span></td>
 		      </tr>
 		    </c:forEach>
 		  </tbody>			  
@@ -438,7 +443,7 @@ $(document).ready(function(){
         	bb.addClass("togle");
         
         $.ajax({
-            url: "http://localhost:8081/api/issue2?aa="+aa,
+            url: "/api/issue2?aa="+aa,
             method: "GET",
             dataType: "json",
             success: function(response){
@@ -509,8 +514,13 @@ function gogo() {
 	    }
 	});
 	
-    var url = "http://localhost:8081/purchaseorder/print?contract_code=" + encodeURIComponent(ball[0]) + "&itemcode=" + encodeURIComponent(ball[1]);
-    window.open(url);
+	if( ball[0] !== undefined && ball[1] !== undefined){
+    var url = "/purchaseorder/print?contract_code=" + encodeURIComponent(ball[0]) + "&itemcode=" + encodeURIComponent(ball[1]);
+    window.open(url);	
+	}else{
+		alert("계약서를 선택해주세요");
+		return;
+	}
 }
 
 

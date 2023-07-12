@@ -120,7 +120,7 @@
             <tr>
                 <td class="sub_title_left" style="background-color: #f2f2f2;"><strong>인도조건</strong></td>
                 <td class="my_content"> <input type="text" name="ex_works" id="pri4" placeholder="여기에 입력해주세요" class="no-border"></td>
-                <td class="sub_title_right" style="background-color: #f2f2f2;"><strong>검수방법 :</strong></td>
+                <td class="sub_title_right" style="background-color: #f2f2f2;"><strong>검수방법</strong></td>
                 <td class="my_content"> <input type="text"  name="inspection_method" id="pri5" placeholder="여기에 입력해주세요" class="no-border"></td>
             </tr>
             <tr>
@@ -199,15 +199,15 @@
 				    }                 
             
             window.print();
-			gamma1();
-
-            
+			gamma1();        
             
         }
     </script>
     
     <script>
         function gamma1(){
+        	
+        	
             var form = document.getElementById("printform");
             form.submit();        	
         }

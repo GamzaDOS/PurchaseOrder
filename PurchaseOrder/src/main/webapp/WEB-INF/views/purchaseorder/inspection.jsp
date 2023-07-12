@@ -23,7 +23,7 @@
 <link rel="stylesheet" href="/resources/css/custom.css" type="text/css" />
 <link rel="stylesheet" href="/resources/css/core/flag-icon.min.css"
 	type="text/css" />
-<title>출고처리</title>
+<title>진척검수</title>
 <script type="text/javascript" src="/resources/js/navbar-scripts.js"></script>
 <script src="https://code.jquery.com/jquery-3.7.0.js"
 	integrity="sha256-JlqSTELeR4TLqP0OG9dxM7yDPqX1ox/HfgiSLBj8+kM="
@@ -105,7 +105,7 @@ button[id="s1"]:hover {
 			<nav class="navbar navbar-expand-lg navbar-dark bg-dark"
 				style="position: relative;">
 				<div class="container-fluid">
-					<a class="navbar-brand" onclick="location.href='index1'">
+					<a class="navbar-brand" onclick="location.href='/'">
 						<h2>
 							<b>조달구매시스템</b>
 						</h2>
@@ -130,20 +130,25 @@ button[id="s1"]:hover {
 			<div class="area"></div>
 			<nav class="main-menu">
 				<ul>
-					<li class="has-subnav" style="font-size: 10px;"><a href="#"
+					<li class="has-subnav" style="font-size: 10px;"><a href="/registerinfo/subcontractor"
 						style="height: 50px;" id="procurement">
 							<div class="nav-text" style="position: relative; left: 10px;">
 								조달 관리</div>
 					</a></li>
-					<li class="has-subnav" style="font-size: 10px;"><a href="#"
+					<li class="has-subnav" style="font-size: 10px;"><a href="/purchaseorder/issue"
 						style="height: 50px;" id="order">
 							<div class="nav-text" style="position: relative; left: 10px;">
 								발주 관리</div>
 					</a></li>
-					<li class="has-subnav" style="font-size: 10px;"><a href="#"
+					<li class="has-subnav" style="font-size: 10px;"><a href="/stockmanagement/inbound"
 						style="height: 50px;" id="stock">
 							<div class="nav-text" style="position: relative; left: 10px;">
 								자재 관리</div>
+					</a></li>
+					<li class="has-subnav" style="font-size: 10px;"><a href="/registerinfo/subcontractor"
+						style="height: 50px;" id="stock">
+							<div class="nav-text" style="position: relative; left: 10px;">
+								정보 등록</div>
 					</a></li>
 				</ul>
 			</nav>
@@ -238,7 +243,7 @@ button[id="s1"]:hover {
 						<thead class="table-dark">
 							<tr>
 								<th scope="col" style="text-align: center;"></th>
-								<th scope="col" style="text-align: center; width: 110px;">품목코드</th>
+								<th onclick="sortTable(1)" scope="col" style="text-align: center; width: 110px;">품목코드</th>
 								<th scope="col" style="text-align: center; width: 110px;">품목명</th>
 								<th scope="col" style="text-align: center; width: 110px;">협력업체명</th>
 								<th scope="col" style="text-align: center; width: 140px;">발주서등록일</th>
@@ -259,7 +264,7 @@ button[id="s1"]:hover {
 									<td style="text-align: center;width: 50px;"><input type="checkbox" class="form-check-input" id="itemCodeCheck" 
 									name="checkbox"  value="${list.po_code}" onclick='check(this)' /></td>
 									</form>
-									<form action="/purchaseorder/inspection2" method="post">
+									<form action="/purchaseorder/inspection2" method="get">
 									<td style="text-align: center;" hidden><span>${list.po_code}</span></td>
 									<td style="text-align: center;" hidden><span>${list.pi_code}</span></td>
 									<td style="text-align: center;"><span>${list.item_code}</span></td>
@@ -268,8 +273,7 @@ button[id="s1"]:hover {
 									<td style="text-align: center;"><span><fmt:formatDate
 												value="${list.po_date}"
 												pattern="yyyy-MM-dd " /></span></td>
-									<td style="text-align: center;"><span>${(list.pi_status == 0) ? '미완료' : '완료'}</span></td>
-										
+									<td style="text-align: center;"><span style="color: ${(list.pi_status == 1) ? 'red' : 'black'}">${(list.pi_status == 0) ? '미완료' : '완료'}</span></td>									
 									<td style="text-align: center; " ><input type="text" id="input1" name="pis_name" value="${list.pis_name}" size="10" /></td>
 									<td style="text-align: center; "><input type="date" id="input2" name="pis_date" value="${list.pis_date}" size="10" /></td>
 									<td style="text-align: center;"><input type="text" id="input3" name="employee_name" value="${list.employee_name}" size="10" /></td>		
@@ -383,7 +387,7 @@ $(document).ready(function(){
 
 		
         $.ajax({
-            url: "http://localhost:8081/api/inspection2?aa="+aa,
+            url: "/api/inspection2?aa="+aa,
             method: "GET",
             dataType: "json",
             success: function(response){    	
@@ -459,11 +463,18 @@ document.getElementById("isave").addEventListener("click", function(event) {
     var checkbox = form.querySelector("input[name='checkbox']:checked");
     if (checkbox) {
       var value = checkbox.value;
-      var url = "http://localhost:8081/purchaseorder/inspection2?po_code=" + encodeURIComponent(value);
+      var url = "/purchaseorder/inspection2?po_code=" + encodeURIComponent(value);
       window.location.href = url;
     }
 });
 </script>
+
+
+
+<script>
+
+</script>
+
 
 
 

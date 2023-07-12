@@ -23,7 +23,7 @@
 	type="text/css" />
 <link rel="stylesheet" href="/resources/css/core/flag-icon.min.css"
 	type="text/css" />
-<title>Report</title>
+<title>현황관리 리포트</title>
 <script type="text/javascript" src="/resources/js/navbar-scripts.js"></script>
 <script type="text/javascript" src="/resources/js/apexcharts.min.js"></script>
 <script src="https://code.jquery.com/jquery-3.7.0.js"
@@ -51,7 +51,7 @@
 			<nav class="navbar navbar-expand-lg navbar-dark bg-dark"
 				style="position: relative;">
 				<div class="container-fluid">
-					<a class="navbar-brand" onclick="location.href='index1'">
+					<a class="navbar-brand" onclick="location.href='/'">
 						<h2>
 							<b>조달구매시스템</b>
 						</h2>
@@ -76,20 +76,25 @@
 			<div class="area"></div>
 			<nav class="main-menu">
 				<ul>
-					<li class="has-subnav" style="font-size: 10px;"><a href="#"
+					<li class="has-subnav" style="font-size: 10px;"><a href="/registerinfo/subcontractor"
 						style="height: 50px;" id="procurement">
 							<div class="nav-text" style="position: relative; left: 10px;">
 								조달 관리</div>
 					</a></li>
-					<li class="has-subnav" style="font-size: 10px;"><a href="#"
+					<li class="has-subnav" style="font-size: 10px;"><a href="/purchaseorder/issue"
 						style="height: 50px;" id="order">
 							<div class="nav-text" style="position: relative; left: 10px;">
 								발주 관리</div>
 					</a></li>
-					<li class="has-subnav" style="font-size: 10px;"><a href="#"
+					<li class="has-subnav" style="font-size: 10px;"><a href="/stockmanagement/inbound"
 						style="height: 50px;" id="stock">
 							<div class="nav-text" style="position: relative; left: 10px;">
 								자재 관리</div>
+					</a></li>
+					<li class="has-subnav" style="font-size: 10px;"><a href="/registerinfo/subcontractor"
+						style="height: 50px;" id="stock">
+							<div class="nav-text" style="position: relative; left: 10px;">
+								정보 등록</div>
 					</a></li>
 				</ul>
 			</nav>

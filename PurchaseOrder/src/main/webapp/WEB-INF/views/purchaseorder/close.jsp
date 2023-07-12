@@ -23,7 +23,7 @@
 <link rel="stylesheet" href="/resources/css/custom.css" type="text/css" />
 <link rel="stylesheet" href="/resources/css/core/flag-icon.min.css"
 	type="text/css" />
-<title>출고처리</title>
+<title>구매발주서 마감</title>
 <script type="text/javascript" src="/resources/js/navbar-scripts.js"></script>
 <script src="https://code.jquery.com/jquery-3.7.0.js"
 	integrity="sha256-JlqSTELeR4TLqP0OG9dxM7yDPqX1ox/HfgiSLBj8+kM="
@@ -99,7 +99,7 @@ button[id="s1"]:hover {
 			<nav class="navbar navbar-expand-lg navbar-dark bg-dark"
 				style="position: relative;">
 				<div class="container-fluid">
-					<a class="navbar-brand" onclick="location.href='index1'">
+					<a class="navbar-brand" onclick="location.href='/'">
 						<h2>
 							<b>조달구매시스템</b>
 						</h2>
@@ -124,20 +124,25 @@ button[id="s1"]:hover {
 			<div class="area"></div>
 			<nav class="main-menu">
 				<ul>
-					<li class="has-subnav" style="font-size: 10px;"><a href="#"
+					<li class="has-subnav" style="font-size: 10px;"><a href="/registerinfo/subcontractor"
 						style="height: 50px;" id="procurement">
 							<div class="nav-text" style="position: relative; left: 10px;">
 								조달 관리</div>
 					</a></li>
-					<li class="has-subnav" style="font-size: 10px;"><a href="issue"
+					<li class="has-subnav" style="font-size: 10px;"><a href="/purchaseorder/issue"
 						style="height: 50px;" id="order">
 							<div class="nav-text" style="position: relative; left: 10px;">
 								발주 관리</div>
 					</a></li>
-					<li class="has-subnav" style="font-size: 10px;"><a href="#"
+					<li class="has-subnav" style="font-size: 10px;"><a href="/stockmanagement/inbound"
 						style="height: 50px;" id="stock">
 							<div class="nav-text" style="position: relative; left: 10px;">
 								자재 관리</div>
+					</a></li>
+					<li class="has-subnav" style="font-size: 10px;"><a href="/registerinfo/subcontractor"
+						style="height: 50px;" id="stock">
+							<div class="nav-text" style="position: relative; left: 10px;">
+								정보 등록</div>
 					</a></li>
 				</ul>
 			</nav>
@@ -150,7 +155,7 @@ button[id="s1"]:hover {
 			<div class="wrap">
 				<div class="card">
 					<div class="card-header">
-						<b>구매발주서 조회</b>
+						<b>구매발주서 조회 가자가자가자가작ㅈ갖가작작작작</b>
 					</div>
 					<form action="close">
 						<div class="card-body">
@@ -249,7 +254,7 @@ button[id="s1"]:hover {
 									<td style="text-align: center;"><span><fmt:formatDate
 												value="${list.po_date}"
 												pattern="yyyy-MM-dd " /></span></td>
-									<td style="text-align: center;"><span>
+									<td style="text-align: center;"><span style="color: ${(list.close_status == 1) ? 'red' : 'black'}">
 									  ${(list.close_status == 0) ? '미완료' : '완료'}
 									</span></td>								
 								</tr>
